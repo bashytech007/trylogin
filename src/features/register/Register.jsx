@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, ErrorMessage, Field, useFormik, Formik,touched } from "formik";
+import { Form, ErrorMessage, Field, useFormik, Formik, touched } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { updateVal } from "./slice";
 import { useDebouncedCallback } from "use-debounce";
@@ -55,18 +55,19 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email format").required("Required"),
   password: Yup.string().required("password must match password confirm"),
 
-  passwordConfirm: Yup
-    .string()
+  passwordConfirm: Yup.string()
     .required()
     .oneOf([Yup.ref("password")], "Passwords must match"),
 
-  username: Yup
-    .string()
-    .test("username", "We have this username", (inputValue) => {
+  username: Yup.string().test(
+    "username",
+    "We have this username",
+    (inputValue) => {
       return new Promise((resolve) =>
         doWeHaveTheUserDebounced(resolve, inputValue)
       );
-    }),
+    }
+  ),
 });
 
 const selectEmail = (state) => state.register.email;
@@ -91,7 +92,7 @@ const Register = () => {
   }, 2500);
 
   return (
-    <div className="w-full h-screen grid grid-cols-2 lg:grid-cols-2 ">
+    <div className="w-full h-screen grid grid-cols-1 lg:grid-cols-2 ">
       <div className=" bg-gradient-to-b from-pink-300 via-purple-500 to-blue-600 w-full h-full px-8 py-4 flex flex-col items-center justify-center gap-3 text-white">
         <h1 className="text-3xl">
           Discover a community of developers and creatives
