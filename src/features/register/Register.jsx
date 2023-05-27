@@ -8,7 +8,7 @@ import "rsuite/dist/rsuite.min.css";
 
 import { Button, Input } from "rsuite";
 
-import * as yup from "yup";
+import * as Yup from "yup";
 
 const doWeHaveTheUser = (resolve, inputValue) => {
   fetch("http://jsonplaceholder.typicode.com/users")
@@ -51,16 +51,16 @@ const initialValues = {
 const onSubmit = (values) => {
   console.log("Form data", values);
 };
-const schema = yup.object({
-  email: yup.string().email("Invalid email format").required("Required"),
-  password: yup.string().required("password must match password confirm"),
+const validationSchema = Yup.object().shape({
+  email: Yup.string().email("Invalid email format").required("Required"),
+  password: Yup.string().required("password must match password confirm"),
 
-  passwordConfirm: yup
+  passwordConfirm: Yup
     .string()
     .required()
-    .oneOf([yup.ref("password")], "Passwords must match"),
+    .oneOf([Yup.ref("password")], "Passwords must match"),
 
-  username: yup
+  username: Yup
     .string()
     .test("username", "We have this username", (inputValue) => {
       return new Promise((resolve) =>
@@ -80,7 +80,7 @@ const Register = () => {
   const formik = useFormik({
     initialValues,
     onSubmit,
-    schema,
+    validationSchema,
   });
 
   // console.log("Form values", formik.values);
@@ -106,8 +106,8 @@ const Register = () => {
       <Formik
         // validateOnChange={false}
         initialValues={initialValues}
-        schema={schema}
-        onSubmit={onSubmit}
+        validationSchema={validationSchema}
+        onSubmit={onsubmit}
       >
         {({
           handleChange,
@@ -118,15 +118,16 @@ const Register = () => {
           errors,
           touched,
           values,
+          handleBlur,
         }) => (
           <Form
-            onSubmit={handleSubmit}
+            onSubmit={formik.handleSubmit}
             className="w-full mx-auto px-14 py-32 -mt-24"
           >
             <h1 className="text-2xl -mt-8">Create new account</h1>
             <p className="font-bold">A place to connect and work from home</p>
             <div className="mb-8">
-              <p className="text-2xl mb-6">Email Address</p>
+              <p className="text-2xl ">Email Address</p>
             </div>
             <label htmlFor="email" className="">
               Email
@@ -138,15 +139,17 @@ const Register = () => {
                 id="email"
                 className="mt-8 block border border-t-0  w-[19rem] focus:outline-none  border-x-0   border-b-2"
                 placeholder="email"
-                onChange={(val, event) => {
-                  handleChange(event);
-                  updateVal("email", val);
-                }}
-                // onChange={handleChange}
-                values={values.email}
+                // onChange={(val, event) => {
+                //   formik.handleChange(event)
+                //   updateVal("email", val)
+                // }}
+
+                onChange={formik.handleChange}
+                value={formik.values.email}
+                onBlur={formik.handleBlur}
               />
               {formik.touched.email && formik.errors.email ? (
-                <div className="error">{formik.errors.email}</div>
+                <div className="errors">{formik.errors.email}</div>
               ) : null}
             </div>
             <div className="flex items-center gap-4 justify-between mt-8 mb-4">
@@ -161,11 +164,9 @@ const Register = () => {
                     name="firstname"
                     placeholder="firstname"
                     className="block border border-t-0  w-[16rem] focus:outline-none  border-x-0   border-b-2 "
-                    onChange={(val, event) => {
-                      handleChange(event);
-                      updateVal("firstname", val);
-                    }}
-                    value={values.firstname}
+                    value={formik.values.firstname}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                   />
                   {formik.touched.firstname && formik.errors.firstname ? (
                     <div className="errors">{formik.errors.firstname}</div>
@@ -182,14 +183,12 @@ const Register = () => {
                     id="lastname"
                     placeholder="lastname"
                     className="border w-[16rem] border-t-0 focus:outline-none border-x-0 border-b-2"
-                    onChange={(val, event) => {
-                      handleChange(event);
-                      updateVal("lastname", val);
-                    }}
-                    value={values.lastname}
+                    value={formik.values.lastname}
+                    onChange={formik.handleChange}
+                    onBlur={formik.handleBlur}
                   />
                   {formik.touched.lastname && formik.errors.lastname ? (
-                    <div className="error">{formik.errors.email}</div>
+                    <div className="error">{formik.errors.lastname}</div>
                   ) : null}
                 </div>
               </div>
@@ -201,14 +200,12 @@ const Register = () => {
                 name="password"
                 className="border w-[32rem] border-t-0 focus:outline-none border-x-0 border-b-2"
                 placeholder="password"
-                onChange={(val, event) => {
-                  handleChange(event);
-                  updateVal("password", val);
-                }}
-                value={values.password}
+                value={formik.values.password}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
               />
               {formik.touched.password && formik.errors.password ? (
-                <div className="error">formik.errors.password</div>
+                <div className="error">{formik.errors.password}</div>
               ) : null}
             </div>
 
@@ -220,13 +217,9 @@ const Register = () => {
                 name="passwordConfirm"
                 className="border w-[32rem] border-t-0 focus:outline-none border-x-0 border-b-2"
                 placeholder="password confirm"
-                onChange={(val, event) => {
-                  handleChange(event);
-                  updateVal("passwordConfirm", val);
-                }}
-                // onChange={formik.handleChange}
-
-                value={values.passwordConfirm}
+                value={formik.values.passwordConfirm}
+                onChange={formik.values.handleChange}
+                onBlur={formik.values.handleBlur}
               />
               {formik.touched.passwordConfirm &&
               formik.errors.passwordConfirm ? (
