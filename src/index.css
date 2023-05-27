@@ -25,10 +25,7 @@ html {
 .right{
   background:purple;
 }
-label{
-  display:block !important;
 
-}
 .errors{
 color:red;
 }

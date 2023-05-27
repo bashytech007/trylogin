@@ -139,14 +139,13 @@ const Register = () => {
                 id="email"
                 className="mt-8 block border border-t-0  w-[19rem] focus:outline-none  border-x-0   border-b-2"
                 placeholder="email"
-                // onChange={(val, event) => {
-                //   formik.handleChange(event)
-                //   updateVal("email", val)
-                // }}
-
-                onChange={formik.handleChange}
+                onChange={(val, event) => {
+                  formik.handleChange(event);
+                  updateVal("email", val);
+                }}
                 value={formik.values.email}
                 onBlur={formik.handleBlur}
+                // onChange={formik.handleChange}
               />
               {formik.touched.email && formik.errors.email ? (
                 <div className="errors">{formik.errors.email}</div>
@@ -164,8 +163,12 @@ const Register = () => {
                     name="firstname"
                     placeholder="firstname"
                     className="block border border-t-0  w-[16rem] focus:outline-none  border-x-0   border-b-2 "
+                    onChange={(val, event) => {
+                      formik.handleChange(event);
+                      updateVal("firstname", val);
+                    }}
+                    // onChange={formik.handleChange}
                     value={formik.values.firstname}
-                    onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                   />
                   {formik.touched.firstname && formik.errors.firstname ? (
@@ -183,8 +186,12 @@ const Register = () => {
                     id="lastname"
                     placeholder="lastname"
                     className="border w-[16rem] border-t-0 focus:outline-none border-x-0 border-b-2"
+                    onChange={(val, event) => {
+                      formik.handleChange(event);
+                      updateVal("lastname", val);
+                    }}
                     value={formik.values.lastname}
-                    onChange={formik.handleChange}
+                    // onChange={formik.handleChange}
                     onBlur={formik.handleBlur}
                   />
                   {formik.touched.lastname && formik.errors.lastname ? (
@@ -200,10 +207,14 @@ const Register = () => {
                 name="password"
                 className="border w-[32rem] border-t-0 focus:outline-none border-x-0 border-b-2"
                 placeholder="password"
-                value={formik.values.password}
-                onChange={formik.handleChange}
+                onChange={(val, event) => {
+                  formik.handleChange(event);
+                  updateVal("password", val);
+                }}
                 onBlur={formik.handleBlur}
+                values={formik.values.password}
               />
+
               {formik.touched.password && formik.errors.password ? (
                 <div className="error">{formik.errors.password}</div>
               ) : null}
@@ -211,16 +222,19 @@ const Register = () => {
 
             <div className="mb-8 w-full">
               <label className="">Password</label>
-
               <Input
                 type="password"
                 name="passwordConfirm"
                 className="border w-[32rem] border-t-0 focus:outline-none border-x-0 border-b-2"
                 placeholder="password confirm"
+                onChange={(val, event) => {
+                  formik.handleChange(event);
+                  updateVal("passwordConfirm", val);
+                }}
                 value={formik.values.passwordConfirm}
-                onChange={formik.values.handleChange}
                 onBlur={formik.values.handleBlur}
               />
+
               {formik.touched.passwordConfirm &&
               formik.errors.passwordConfirm ? (
                 <div className="errors">{formik.errors.passwordConfirm}</div>
